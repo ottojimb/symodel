@@ -1,0 +1,23 @@
+{% block imports %}
+    from Base import Model
+{% endblock %}
+
+
+{% block classes %}
+class {{ class_name }}(Model):
+    {% block class_comments %}
+    """
+    This class represents one row inside the {{ table_name }} table within the database
+    """
+    {% endblock class_comments %}
+
+    id = fields.IntField(pk=True)
+    {% block fields %}
+    {% for field in fields %}
+    {{ field }}
+    {% endfor %}
+    {% endblock %}
+{% endblock %}
+
+{% block exports %}
+{% endblock %}
