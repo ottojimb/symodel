@@ -15,7 +15,7 @@ ps_cursor = sql_conn.cursor(cursor_factory=RealDictCursor)
 def get_relationship(table_row, foreign_keys):
     field = foreign_keys[table_row["column_name"]]
     field_name = str(field["column_name"]).replace("_id", "")
-    class_name = "".join(word.title() for word in str(field["table_name"]).split("_"))
+    class_name = "".join(word.title() for word in str(field["foreign_table_name"]).split("_"))
     return f'{field_name} = fields.ForeignKeyField("models.{class_name}", related_name="{field["table_name"]}")'
 
 
@@ -33,7 +33,7 @@ def get_data_type(table_row):
     elif table_row["data_type"] == "character varying":
         render_line = f"{table_row['column_name']} = fields.CharField(max_length={table_row['character_maximum_length']}, "
     else:
-        return f"{table_row['column_name']} = # VALIDATE_BY_HAND"
+        return f"{table_row['column_name']} = fields.ToValidate()  # VALIDATE_BY_HAND"
 
     if table_row["is_nullable"]:
         render_line = f"{render_line}null=True"
@@ -50,7 +50,7 @@ def get_field(table_row, foreign_keys):
     line = get_data_type(table_row)
 
     if str(table_row["column_name"]).endswith("_id"):
-        line = f"{line} # CHECK_RELATIONSHIP"
+        line = f"{line}  # CHECK_RELATIONSHIP"
 
     return line
 

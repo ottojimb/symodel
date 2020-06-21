@@ -6,9 +6,7 @@
 {% block classes %}
 class {{ class_name }}(Model):
     {% block class_comments %}
-    """
-    This class represents one row inside the {{ table_name }} table within the database
-    """
+    """Represents one row inside the {{ table_name }} table within the database."""
     {% endblock class_comments %}
 
     id = fields.IntField(pk=True)
@@ -18,6 +16,7 @@ class {{ class_name }}(Model):
     {% endfor %}
     {% endblock %}
 {% endblock %}
+
 
 {% block exports %}
 {% endblock %}
